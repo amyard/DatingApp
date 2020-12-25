@@ -22,9 +22,10 @@ namespace API.Enteties
         public string Country { get; set; }
         public ICollection<Photo> Photos { get; set; }
 
-        public int GetAge()
-        {
-            return DateOfBirth.CalculateAge();
-        }
+        // hide this method to optimize the query. it console it will not select password and hash transform to DTO
+        //public int GetAge()
+        //{
+        //    return DateOfBirth.CalculateAge();
+        //}
     }
 }
