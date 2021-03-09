@@ -40,11 +40,12 @@ export class MemberEditComponent implements OnInit {
   }
 
   updateMember() {
-    console.log(this.member);
-    this.toastr.success('Profile updated successfully.');
+    this.memberService.updateMember(this.member).subscribe(() => {
+      this.toastr.success('Profile updated successfully.');
 
-    // after click on Save Changes need reset form action, because btn stays enabled after click
-    this.editForm.reset(this.member);
+      // after click on Save Changes need reset form action, because btn stays enabled after click
+      this.editForm.reset(this.member);
+    });
   }
 
 }
