@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {User} from "../../models/user";
 import {Member} from "../../models/member";
 import {AccountService} from "../../_services/account.service";
@@ -16,6 +16,13 @@ export class MemberEditComponent implements OnInit {
   @ViewChild('editForm') editForm: NgForm;
   member: Member;
   user: User;
+  // if we will close browser or tab with unsaved changes - will get some notification
+  // use together with guard PreventUnsavedChangesGuard
+  @HostListener('window:beforeunload', ['$event']) unloadNitification($event: any) {
+    if(this.editForm.dirty) {
+      $event.returnValue = true;
+    }
+  }
 
   constructor(private accountService: AccountService, private memberService: MembersService,
               private toastr: ToastrService) {
