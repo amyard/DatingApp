@@ -18,7 +18,7 @@ export class LoadingInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     this.busyService.busy();
     return next.handle(request).pipe(
-      delay(100),
+      delay(1000), // time delay - how much time will display the spinner
       finalize(() => {
         this.busyService.idle();
       })
