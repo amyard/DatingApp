@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Helpers;
 
 namespace API.Data
 {
@@ -29,11 +30,12 @@ namespace API.Data
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<MemberDTO>> GetMembersAsync()
+        public async Task<PagedList<MemberDTO>> GetMembersAsync(UsersParams usersParams)
         {
-            return await _context.Users
+            var query = _context.Users
                 .ProjectTo<MemberDTO>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+                .AsNoTracking();
+            return await PagedList<MemberDTO>.CreateAsync(query, usersParams.PageNumber, usersParams.PageSize);
         }
 
         public async Task<AppUser> GetUserByIdAsync(int id)

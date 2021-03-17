@@ -443,3 +443,5 @@ dating.db
 *.png
 *.bmp
 *.webp
+datingapp.db-shm
+datingapp.db-wal
