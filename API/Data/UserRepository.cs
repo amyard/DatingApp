@@ -1,4 +1,5 @@
-﻿using API.DTOs;
+﻿using System;
+using API.DTOs;
 using API.Enteties;
 using API.Interfaces;
 using AutoMapper;
@@ -6,6 +7,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using API.Helpers;
 
@@ -33,9 +35,15 @@ namespace API.Data
         public async Task<PagedList<MemberDTO>> GetMembersAsync(UsersParams usersParams)
         {
             // add default gender, remove current user, add opposite gender for current user
+            // filter by age range also
             var query = _context.Users.AsQueryable();
             query = query.Where(u => u.UserName != usersParams.CurrentUserName);
             query = query.Where(u => u.Gender == usersParams.Gender);
+
+            var minDob = DateTime.Today.AddYears(-usersParams.MaxAge - 1);
+            var maxDob = DateTime.Today.Date.AddYears(-usersParams.MinAge);
+
+            query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
 
             return await PagedList<MemberDTO>.CreateAsync(
                 query.ProjectTo<MemberDTO>(_mapper.ConfigurationProvider).AsNoTracking(),
