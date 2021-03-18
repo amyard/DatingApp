@@ -34,6 +34,13 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers([FromQuery]UsersParams usersParams)
         {
+            // add default gender, remove current user, add opposite gender for current user
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            usersParams.CurrentUserName = User.GetUsername();
+
+            if (string.IsNullOrEmpty(usersParams.Gender))
+                usersParams.Gender = user.Gender == "male" ? "female" : "male";
+            
             var users = await _userRepository.GetMembersAsync(usersParams);
             
             Response.AddPaginationHeader(users.CurrentPage, users.PageSize,users.TotalCount, 
