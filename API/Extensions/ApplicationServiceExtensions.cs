@@ -20,6 +20,9 @@ namespace API.Extensions
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
+            // log service to track last user activity on site
+            services.AddScoped<LogUserActivity>();
+            
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlite(config.GetConnectionString("DefaultConnection"));
