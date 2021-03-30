@@ -18,6 +18,7 @@ namespace API.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPhotoService, PhotoService>();
+            services.AddScoped<ILikesRepository, LikesRepository>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
             // log service to track last user activity on site
