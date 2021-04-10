@@ -1,8 +1,6 @@
 ﻿using API.Enteties;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -19,12 +17,8 @@ namespace API.Data
 
             foreach(var user in users)
             {
-                using var hmac = new HMACSHA512();
-
                 user.UserName = user.UserName.ToLower();
-                user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("Admin123*"));
-                user.PasswordSalt = hmac.Key;
-
+                
                 context.Users.Add(user);
             }
 
