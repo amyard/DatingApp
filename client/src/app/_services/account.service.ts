@@ -27,6 +27,11 @@ export class AccountService {
   }
 
   setCurrentUser(user: User) {
+    user.roles = [];
+    const roles = this.getDecodedToken(user.token).role;
+    // if more than 1 role in user , roles will be as array. I role is one, roles will be string. Need bring all to Array type
+    Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
+
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
@@ -44,5 +49,9 @@ export class AccountService {
         }
       })
     );
+  }
+
+  getDecodedToken(token) {
+    return JSON.parse(atob(token.split('.')[1]));
   }
 }
